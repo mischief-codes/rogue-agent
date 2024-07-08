@@ -22,7 +22,7 @@
   |_  [=bowl:neo =aeon:neo =pail:neo]
     ::
     ++  init
-      |=  vax=(unit pail:neo)
+      |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
       `game-component-grid-square/!>(~)
     ::

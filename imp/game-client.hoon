@@ -32,7 +32,11 @@
     ++  init
       |=  vas=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      `game-client/!>(~)
+      :_  game-client/!>(~)
+      =/  =pith:neo  (welp here.bowl #/tic-tac-toe/[ud/0])
+      :~  :-  (welp here.bowl #/instance/tic-tac-toe/[ud/0])
+            [%make %game-instance `[%game-instance !>(~)] ~]
+      ==
     ::
     ++  poke
       |=  [=stud:neo vax=vase]

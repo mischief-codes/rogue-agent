@@ -42,7 +42,6 @@
   %-  ~(gas by *lads:neo)
   :~  :-  [|/%ud |/%ud |]  [[pro/%game-component-grid-square] ~]
   ==
-
 ::
 ++  deps
   ^-  deps:neo
@@ -53,9 +52,9 @@
   |_  [=bowl:neo =aeon:neo =pail:neo]
     ::
     ++  init
-    |=  old=(unit pail:neo)
+    |=  pal=(unit pail:neo)
     ^-  (quip card:neo pail:neo)
-    =+  !<(grid=game-component-grid q:(need old))
+    =+  !<(grid=game-component-grid q:(need pal))
     [(make-squares bowl x.grid y.grid) game-component-grid/!>(grid)]
     ::
     ++  poke

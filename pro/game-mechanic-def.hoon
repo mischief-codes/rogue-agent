@@ -1,1 +1,0 @@
-,[jurisdiction=stud:neo]

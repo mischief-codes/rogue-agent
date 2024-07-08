@@ -1,19 +1,24 @@
-:: do imports !
+/@  game-computation
+/@  game-condition
+/@  game-resolution
+::
 ^-  kook:neo
 |%
 ::
 ++  state
   ^-  curb:neo
-  :: set state !
-  [%pro %sig]
+  [%pro %game-mechanics-config]
 ::
 ++  poke
   ^-  (set stud:neo)
   *(set stud:neo)
-::
 ++  kids
   ^-  kids:neo
-  *kids:neo
+  %-  some
+  :-  %z
+  %-  ~(gas by *lads:neo)
+  :~  :-  &  [[%or :~(pro/%game-computation pro/%game-condition pro/%game-resolution)] ~]
+  ==
 ::
 ++  deps
   ^-  deps:neo
@@ -26,8 +31,10 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      :: set init !
-      `sig/!>(~)
+      :_  game-mechanics-config/!>(~)
+      :~  :-  (welp here.bowl #/ttt-square-empty)
+             [%make %game-condition-ttt-square-empty ~ ~]
+      ==
     ::
     ++  poke
       |=  =pail:neo

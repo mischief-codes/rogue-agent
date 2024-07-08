@@ -1,9 +1,10 @@
+/@  game-condition
 ^-  kook:neo
 |%
 ::
 ++  state
   ^-  curb:neo
-  [%pro %sig]
+  [%pro %game-condition]
 ::
 ++  poke
   ^-  (set stud:neo)
@@ -22,9 +23,10 @@
   |_  [=bowl:neo =aeon:neo =pail:neo]
     ::
     ++  init
-      |=  vax=(unit pail:neo)
+      |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      `game-comdition/!>(~)
+      =+  !<(test=game-condition q:(need pal))
+      `game-condition/!>(test)
     ::
     ++  poke
       |=  =pail:neo
