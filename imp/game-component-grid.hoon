@@ -38,7 +38,7 @@
 ++  kids
   ^-  kids:neo
   %-  some
-  :-  %y
+  :-  %z
   %-  ~(gas by *lads:neo)
   :~  :-  [|/%ud |/%ud |]  [[pro/%game-component-grid-square] ~]
   ==

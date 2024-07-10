@@ -5,17 +5,18 @@
 ++  resolve-ttt-move
    |=  [=bowl:neo =lore:neo params=(map @tas vase)]
    ^-  (list card:neo)
-   =/  vax=vase  (~(got by params) %grid-index)
-   =/  idx=game-component-grid-index  !<(game-component-grid-index vax)
-   :~  :-  (welp here.bowl #/components/board/[ud/x.idx]/[ud/y.idx])
-     [%make %game-component-ttt-x `[%game-component-ttt-x !>(~)] ~]
-   ==
+   *(list card:neo)
+  ::  =/  vax=vase  (~(got by params) %grid-index)
+  ::  =/  idx=game-component-grid-index  !<(game-component-grid-index vax)
+  ::  :~  :-  (welp here.bowl #/components/board/[ud/x.idx]/[ud/y.idx])
+  ::    [%make %game-component-ttt-x `[%game-component-ttt-x !>(~)] ~]
+  ::  ==
 --
 |%
 ::
 ++  state
   ^-  curb:neo
-  [%pro %game-resolution]
+  [%pro %game-mechanic]
 ::
 ++  poke
   ^-  (set stud:neo)
@@ -36,7 +37,7 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      `game-resolution/!>(resolve-ttt-move)
+      `game-mechanic/!>([%effect resolve-ttt-move])
     ::
     ++  poke
       |=  =pail:neo
