@@ -40,10 +40,10 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      :_  game-mechanic/!>([%condition square-empty])
-      :~  :-   (snoc here.bowl %ttt-effect-move)
-            [%make %game-effect-ttt-move ~ ~]
-      ==
+      `game-mechanic/!>([%condition square-empty])
+      :: :~  :-   (snoc here.bowl %ttt-effect-move)
+      ::       [%make %game-effect-ttt-move ~ ~]
+      :: ==
     ::
     ++  poke
       |=  =pail:neo

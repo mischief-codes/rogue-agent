@@ -4,36 +4,68 @@
 /@  game-fog
 /@  game-component-grid
 /@  game-mechanic
+/@  game-params-ttt-square-empty
+/@  game-param-assignment
+/-  game-test
+
 =>
 |%
+++  game-ttt-square-empty
+  |=  params=*
+  ^-  ?
+  =/  typed-params  ;;(game-params-ttt-square-empty params)
+  &
+::
+++  build-params
+  |=  [=bowl:neo mechanic-pith=pith]
+  :: ^-  *
+  :: =/  mechanic-shrub  (~(dip of:neo kids.bowl) mechanic-pith)
+  :: =/  mechanic  (~(got of:neo kids.bowl) mechanic-pith)
+  :: =/  params-list=(list *)
+  :: %+  turn
+  ::     ~(tap of:neo mechanic-shrub)
+  ::     |=  [=pith =idea:neo]
+  ::     ~&  'pith'
+  ::     1
+  :: ~&  >>>  'params list'  ~&  >>>  params-list
+  :: ?~  params-list  !>(~)
+  :: =/  first-param  -.params-list
+  :: ?~  +.params-list  !>(first-param)
+  :: =/  other-params=(list *)  +.params-list
+  :: =/  params
+  :: %+  reel
+  ::    other-params
+  ::    |:  [a=** b=first-param]  :-  b  a
+  [1 1]
+::
 ++  resolve-interaction
-  |=  [=bowl:neo full-pith=pith:neo context=(map @tas vase)]
+  |=  [=bowl:neo full-pith=pith:neo context=(map pith vase)]
   ^-  (list card:neo)
   =/  partial-pith-len=@  1
-  =/  domain  *lore:neo
   |-
-  ?:  (gth partial-pith-len (lent full-pith))  *(list card:neo)
+  ?:  (gth partial-pith-len (lent full-pith))  *(list card:neo)  :: should never happen (no effect)
   =/  partial-pith=pith:neo  (swag [0 partial-pith-len] full-pith)
-  ~&  >>>  partial-pith
+  ~&  >  "pith"  ~&  >  partial-pith
   =/  kid  (~(get of:neo kids.bowl) partial-pith)
   ?~  kid  %=($ partial-pith-len +(partial-pith-len))
-  =+  !<(child=game-mechanic q.q.saga.u.kid)
-  ~&  >>  -.child
-  ?-  -.child
+  =+  !<(mechanic=game-mechanic q.q.saga.u.kid)
+  =/  params  (build-params bowl partial-pith)
+  :: ~&  >>>  'params'  ~&  >>>  params
+  ?-  -.mechanic
     %condition
-      =/  allowed=?  (f.child bowl domain context)
+      =/  allowed=?  (f.mechanic params)
       ~&  >>>  "allowed"  ~&  >>>  allowed
       ?.  allowed  !!  %=($ partial-pith-len +(partial-pith-len))
     ::
-    %computation
-      =/  new-context  (f.child bowl domain context)
-      ~&  >>>  "new-context"  ~&  >>>  new-context
-      %=($ partial-pith-len +(partial-pith-len))
-    ::
-    %effect
-      =/  new-cards=(list card:neo)  (f.child bowl domain context)
-      ~&  >>>  "new-cards"  ~&  >>>  new-cards
-      new-cards
+    :: %computation
+    ::   =/  new-context  (f.mechanic params)
+    ::   ~&  >>>  "new-context"  ~&  >>>  new-context
+    ::   %=($ partial-pith-len +(partial-pith-len))
+    :: ::
+    :: %effect
+    ::   =/  new-cards=(list card:neo)  (f.mechanic params)
+    ::   ~&  >>>  "new-cards"  ~&  >>>  new-cards
+    ::   new-cards
   ==
 --
 ::
@@ -52,8 +84,9 @@
   %-  some
   :-  %z
   %-  ~(gas by *lads:neo)
-  :~  [[&/%mechanics &] pro/%game-mechanic ~]
-      [[&/%components &] pro/%game-component ~]
+  :~  [[&/%mechanics |/%tas &] pro/%game-mechanic ~]
+      :: [[&/%mechanics |/%tas &/%params |/%ud |] pro/%game-param-assignment ~]
+      [[|/%components &] pro/%game-component ~]
       :: [[&/%fog |/%tas |] pro/%game-fog ~]
       :: [[[&/%player |/%p |]] pro/%game-player ~]
   ==
@@ -72,7 +105,7 @@
       ^-  (quip card:neo pail:neo)
       :_  game-instance/!>(~)
       :~  :-  (welp here.bowl #/mechanics/ttt-square-empty)
-            [%make %game-condition-ttt-square-empty ~ ~]
+            [%make %game-mechanic `[%game-mechanic !>(`game-mechanic`[%condition f=game-ttt-square-empty])] ~]
           :-   (welp here.bowl #/components/grid)
             [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
       ==
@@ -119,7 +152,7 @@
         ==
           %setup
         :~  :-   (welp here.bowl #/mechanics/ttt-square-empty)
-              [%make %game-condition-ttt-square-empty ~ ~]
+              [%make %game-mechanic `[%game-mechanic !>([%condition f=game-ttt-square-empty])] ~]
             :-   (welp here.bowl #/components/grid)
               [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
         ==
