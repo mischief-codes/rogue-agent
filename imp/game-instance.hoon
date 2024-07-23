@@ -92,11 +92,11 @@
 ++  kids
   ^-  kids:neo
   %-  some
-  :-  %y
+  :-  %z
   %-  ~(gas by *lads:neo)
   :~
       :: [[|/%ud &] pro/%game-param-assignment ~]
-      [[&/%components |] pro/%game-component ~]
+      [[&/%components &] pro/%game-component ~]
       :: [[|/%tas |/%ud &] pro/%game-param-assignment ~]
       :: [[|/%tas &] pro/%game-mechanic ~]
       :: [[&/%fog |/%tas |] pro/%game-fog ~]
@@ -157,21 +157,20 @@
         ::     [%make mark.diff init.diff ~]
         :: ==
           %debug
-
-            =/  components-shrub  (~(dip of:neo kids.bowl) #/components)
-            =/  components-root  (~(get of:neo components-shrub) ~)
-            ~&  ":)"
-            ~&  components-root
+            =/  components  (~(get of:neo kids.bowl) #/components)
+            ~&  components
+            =/  grid  (~(get of:neo kids.bowl) #/components/grid)
+            ~&  grid
+            =/  grid-square  (~(get of:neo kids.bowl) #/components/grid/[ud/0]/[ud/0])
+            ~&  grid-square
             *(list card:neo)
-
-
-
           %interact
         :: =/  pax=pith:neo  #/[p/our.bowl]/home/test
         :: =/  cards  (resolve-interaction bowl pith.diff params.diff)
            ~&  'interact'
           :~
-              :-   (snoc here.bowl %components)  [%make %game-component-root ~ ~]
+            :-  (welp here.bowl #/components/grid)
+                [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
           ==
           %kill
         :~  :-  (snoc here.bowl %ttt-square-empty)  [%cull ~]
