@@ -1,6 +1,5 @@
 /@  game-mechanic
-/@  game-component-grid-square
-/@  game-component-grid-index
+:: /@  game-component-grid-index
 ::
 =>
 |%
@@ -10,7 +9,7 @@
   &
   :: =/  vax=vase  (~(got by params) %grid-index)
   :: =/  idx=game-component-grid-index  !<(game-component-grid-index vax)
-  :: =/  =pith  (welp here.bowl #/board/[ud/x.idx]/[ud/y.idx]/x)
+  :: =/  =pith:neo  (welp here.bowl #/board/[ud/x.idx]/[ud/y.idx]/x)
   :: =/  square-contents  (~(get of:neo kids.bowl) pith)
   :: ?~  square-contents  &  |
 --

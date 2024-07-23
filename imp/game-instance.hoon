@@ -6,7 +6,7 @@
 /@  game-mechanic
 /@  game-params-ttt-square-empty
 /@  game-param-assignment
-/-  game-test
+:: /-  game-test
 
 =>
 |%
@@ -14,29 +14,39 @@
   |=  params=*
   ^-  ?
   =/  typed-params  ;;(game-params-ttt-square-empty params)
+  ~&  >>  a.typed-params
   &
 ::
 ++  build-params
-  |=  [=bowl:neo mechanic-pith=pith]
-  :: ^-  *
-  :: =/  mechanic-shrub  (~(dip of:neo kids.bowl) mechanic-pith)
-  :: =/  mechanic  (~(got of:neo kids.bowl) mechanic-pith)
-  :: =/  params-list=(list *)
-  :: %+  turn
-  ::     ~(tap of:neo mechanic-shrub)
-  ::     |=  [=pith =idea:neo]
-  ::     ~&  'pith'
-  ::     1
-  :: ~&  >>>  'params list'  ~&  >>>  params-list
-  :: ?~  params-list  !>(~)
-  :: =/  first-param  -.params-list
-  :: ?~  +.params-list  !>(first-param)
-  :: =/  other-params=(list *)  +.params-list
-  :: =/  params
-  :: %+  reel
-  ::    other-params
-  ::    |:  [a=** b=first-param]  :-  b  a
-  [1 1]
+  |=  [=bowl:neo mechanic-pith=pith:neo]
+  ::
+    =/  assignment  (~(got of:neo kids.bowl) #/components/grid/2/0)
+
+  ::
+  =/  mechanic-shrub  (~(dip of:neo kids.bowl) mechanic-pith)
+  =/  assignment-shrub  (~(dip of:neo kids.bowl) (snoc mechanic-pith [%ud 0]))
+  =/  assignment  (~(get of:neo assignment-shrub) ~)
+  ~&  'assignment shrub null?'  ~&  ?=(~ assignment)
+  =/  mechanic  (~(got of:neo kids.bowl) mechanic-pith)
+  =/  params-list=(list *)
+  %+  turn
+      ~(tap of:neo mechanic-shrub)
+      |=  [=pith:neo =idea:neo]
+      ~&  'pith'  ~&  pith
+      ?~  pith  ~
+      ?.  =(%game-mechanic p.q.saga.idea)  ~
+      =+  !<(p=game-param-assignment q.q.saga.idea)
+      ~&  'p'  ~&  p
+      p
+  ~&  >>>  'params list'  ~&  >>>  params-list
+  ?~  params-list  !>(~)
+  =/  first-param  -.params-list
+  ?~  +.params-list  !>(first-param)
+  =/  other-params=(list *)  +.params-list
+  %+  reel
+     other-params
+     |:  [a=** b=first-param]  :-  b  a
+  :: [1 1]
 ::
 ++  resolve-interaction
   |=  [=bowl:neo full-pith=pith:neo context=(map pith vase)]
@@ -82,11 +92,13 @@
 ++  kids
   ^-  kids:neo
   %-  some
-  :-  %z
+  :-  %y
   %-  ~(gas by *lads:neo)
-  :~  [[&/%mechanics |/%tas &] pro/%game-mechanic ~]
-      :: [[&/%mechanics |/%tas &/%params |/%ud |] pro/%game-param-assignment ~]
-      [[|/%components &] pro/%game-component ~]
+  :~
+      :: [[|/%ud &] pro/%game-param-assignment ~]
+      [[&/%components |] pro/%game-component ~]
+      :: [[|/%tas |/%ud &] pro/%game-param-assignment ~]
+      :: [[|/%tas &] pro/%game-mechanic ~]
       :: [[&/%fog |/%tas |] pro/%game-fog ~]
       :: [[[&/%player |/%p |]] pro/%game-player ~]
   ==
@@ -103,16 +115,18 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      :_  game-instance/!>(~)
-      :~  :-  (welp here.bowl #/mechanics/ttt-square-empty)
-            [%make %game-mechanic `[%game-mechanic !>(`game-mechanic`[%condition f=game-ttt-square-empty])] ~]
-          :-   (welp here.bowl #/components/grid)
-            [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
-      ==
+      `game-instance/!>(~)
+      :: :~
+      ::       :: :-
+      ::       :: (snoc here.bowl %ttt-square-empty)
+      ::       ::  [%make %game-mechanic `[%game-mechanic !>(`game-mechanic`[%condition f=game-ttt-square-empty])] ~]
+      ::     :-   (snoc here.bowl %components)  [%make %game-component-root ~ ~]
+      :: ==
     ::
     ++  poke
       |=  [=stud:neo vax=vase]
       ^-  (quip card:neo pail:neo)
+      ~&  'poke'
       :: ?:  ?=(%gift stud)  ~&  >>>  'gift'  ~&  >>>  vax  `pail
       ?>  ?=(%game-instance-diff stud)
       =/  diff=game-instance-diff  !<(game-instance-diff vax)
@@ -142,16 +156,29 @@
         :: :~  :-  (snoc (snoc here.bowl %components) name.diff)
         ::     [%make mark.diff init.diff ~]
         :: ==
+          %debug
+
+            =/  components-shrub  (~(dip of:neo kids.bowl) #/components)
+            =/  components-root  (~(get of:neo components-shrub) ~)
+            ~&  ":)"
+            ~&  components-root
+            *(list card:neo)
+
+
+
           %interact
         :: =/  pax=pith:neo  #/[p/our.bowl]/home/test
-        =/  cards  (resolve-interaction bowl pith.diff params.diff)
-        *(list card:neo)
+        :: =/  cards  (resolve-interaction bowl pith.diff params.diff)
+           ~&  'interact'
+          :~
+              :-   (snoc here.bowl %components)  [%make %game-component-root ~ ~]
+          ==
           %kill
-        :~  :-  (welp here.bowl #/mechanics/ttt-square-empty)  [%cull ~]
+        :~  :-  (snoc here.bowl %ttt-square-empty)  [%cull ~]
             :-  (welp here.bowl #/components/grid)  [%cull ~]
         ==
           %setup
-        :~  :-   (welp here.bowl #/mechanics/ttt-square-empty)
+        :~  :-   (snoc here.bowl %ttt-square-empty)
               [%make %game-mechanic `[%game-mechanic !>([%condition f=game-ttt-square-empty])] ~]
             :-   (welp here.bowl #/components/grid)
               [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]

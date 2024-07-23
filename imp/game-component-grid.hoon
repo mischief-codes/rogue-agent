@@ -1,5 +1,5 @@
 /@  game-component-grid
-/@  game-component-grid-square
+/@  game-component
 ::
 =>
 |%
@@ -13,7 +13,6 @@
   %-  zing
   %+  turn  (gulf 0 (sub rows 1))
   |=  row=@ud
-  ^-  (list card:neo)
   (make-square bowl row col)
 ::
 ++  make-square
@@ -29,7 +28,7 @@
 ::
 ++  state
   ^-  curb:neo
-  [%pro %game-component-grid]
+  [%pro %game-component]
 ::
 ++  poke
   ^-  (set stud:neo)
@@ -37,11 +36,12 @@
 ::
 ++  kids
   ^-  kids:neo
-  %-  some
-  :-  %z
-  %-  ~(gas by *lads:neo)
-  :~  :-  [|/%ud |/%ud |]  [[pro/%game-component-grid-square] ~]
-  ==
+  *kids:neo
+  :: %-  some
+  :: :-  %z
+  :: %-  ~(gas by *lads:neo)
+  :: :~  :-  [&/%ud |/%ud &]  [[pro/%game-component] ~]
+  :: ==
 ::
 ++  deps
   ^-  deps:neo
@@ -54,8 +54,11 @@
     ++  init
     |=  pal=(unit pail:neo)
     ^-  (quip card:neo pail:neo)
+    ~&  'grid'
+    ~&  'pal'
+    ~&  q:(need pal)
     =+  !<(grid=game-component-grid q:(need pal))
-    [(make-squares bowl x.grid y.grid) game-component-grid/!>(grid)]
+    [(make-squares bowl x.grid y.grid) game-component/!>(~)]
     ::
     ++  poke
       |=  =pail:neo

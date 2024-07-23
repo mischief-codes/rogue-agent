@@ -1,4 +1,4 @@
-/@  game-component-grid-index
+:: /@  game-component-grid-index
 ^-  kook:neo
 =>
 |%

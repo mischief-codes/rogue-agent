@@ -6,6 +6,7 @@ $%
     ::  [%add-mechanic mark=@tas init=(unit pail:neo)]
     ::  [%add-fog mark=@tas init=(unit pail:neo)]
     [%interact =pith:neo params=(map pith vase)]
+    [%debug ~]
     [%kill ~]
     [%setup ~]
 ==

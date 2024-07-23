@@ -3,7 +3,7 @@
 ::
 ++  state
   ^-  curb:neo
-  [%pro %game-component-grid-square]
+  [%pro %game-component]
 ::
 ++  poke
   ^-  (set stud:neo)
@@ -24,7 +24,8 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      `game-component-grid-square/!>(~)
+      ~&  'grid square'
+      `game-component/!>(~)
     ::
     ++  poke
       |=  =pail:neo
