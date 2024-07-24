@@ -15,9 +15,10 @@
 ++  kids
   ^-  kids:neo
   %-  some
-  :-  %z
+  :-  %y
   %-  ~(gas by *lads:neo)
-  :~  [[|/%ud &] pro/%game-param-assignment ~]
+  :~  [[|/%ud |] pro/%game-param-assignment ~]
+      [[|/%tas |] pro/%game-mechanic ~]
   ==
 ::
 ++  deps
@@ -34,8 +35,6 @@
       =/  [=stud:neo =vase]  (need pal)
       =+  !<(mechanic=game-mechanic vase)
       `game-mechanic/!>(mechanic)
-      :: :~  :-  (snoc here.bowl [%ud 0])  [%make %game-param-assignment `[%game-param-assignment !>([%bind value=[1 2]])] ~]
-      :: ==
     ::
     ++  poke
       |=  [=stud:neo vax=vase]
@@ -52,12 +51,18 @@
             ~&  >>  'PITH:'  ~&  >>  pith
             ~
         *(list card:neo)
-        ::
-            %bind
-          :~
-            :-  (snoc here.bowl [%ud idx.diff])
-                [%make %game-param-assignment `[%game-param-assignment !>([%bind value.diff])] ~]
-          ==
+      ::
+          %bind
+        :~
+          :-  (snoc here.bowl [%ud idx.diff])
+              [%make %game-param-assignment `[%game-param-assignment !>([%bind value.diff])] ~]
+        ==
+      ::
+          %add-child
+        :~
+          :-  (snoc here.bowl name.diff)
+              [%make %game-mechanic `[%game-mechanic !>([%condition f.diff])] ~]
+        ==
 
       ==
   --

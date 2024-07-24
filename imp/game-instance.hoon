@@ -1,12 +1,9 @@
 /@  game-instance-diff
-/@  game-player
 /@  game-component
-/@  game-fog
 /@  game-component-grid
 /@  game-mechanic
 /@  game-params-ttt-square-empty
 /@  game-param-assignment
-:: /-  game-test
 
 =>
 |%
@@ -97,10 +94,6 @@
   :~
       [[&/%components &] pro/%game-component ~]
       [[&/%mechanics &] [%or pro/%game-mechanic pro/%game-param-assignment ~] ~]
-      :: [[|/%ud &] pro/%game-param-assignment ~]
-      :: [[|/%tas |/%ud &] pro/%game-param-assignment ~]
-      :: [[&/%fog |/%tas |] pro/%game-fog ~]
-      :: [[[&/%player |/%p |]] pro/%game-player ~]
   ==
 ::
 ++  deps
@@ -133,9 +126,12 @@
       :_  pail
       ?-    -.diff
           %debug
-            =/  ttt-square-empty  (~(get of:neo kids.bowl) #/mechanics/ttt-square-empty/[ud/0])
-            :: =+  !<(mechanic=game-mechanic q.q.saga.idea.ttt-square-empty)
-            ~&  "mechanic"  ~&  ttt-square-empty
+
+            =/  bind  (~(got of:neo kids.bowl) #/mechanics/ttt-square-empty/[ud/0])
+            ~&  "bind"  ~&  bind
+
+            =/  bind2  (~(got of:neo kids.bowl) #/mechanics/ttt-square-empty/ttt-is-my-turn/[ud/0])
+            ~&  "bind2"  ~&  bind2
             :: =/  grid  (~(get of:neo kids.bowl) #/components/grid)
             :: ~&  grid
             :: =/  grid-square  (~(get of:neo kids.bowl) #/components/grid/[ud/0]/[ud/0])
