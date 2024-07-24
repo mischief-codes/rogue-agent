@@ -44,12 +44,6 @@
       :_  pail
       ?-    -.diff
           %debug
-        =/  whatever
-        %+  turn
-            ~(tap of:neo kids.bowl)
-            |=  [=pith:neo =idea:neo]
-            ~&  >>  'PITH:'  ~&  >>  pith
-            ~
         *(list card:neo)
       ::
           %bind

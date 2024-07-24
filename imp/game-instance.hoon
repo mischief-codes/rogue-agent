@@ -1,10 +1,9 @@
 /@  game-instance-diff
-/@  game-component
 /@  game-component-grid
 /@  game-mechanic
 /@  game-params-ttt-square-empty
 /@  game-param-assignment
-
+::
 =>
 |%
 ++  game-ttt-square-empty
@@ -43,7 +42,6 @@
   %+  reel
      other-params
      |:  [a=** b=first-param]  :-  b  a
-  :: [1 1]
 ::
 ++  resolve-interaction
   |=  [=bowl:neo full-pith=pith:neo context=(map pith vase)]
@@ -57,7 +55,6 @@
   ?~  kid  %=($ partial-pith-len +(partial-pith-len))
   =+  !<(mechanic=game-mechanic q.q.saga.u.kid)
   =/  params  (build-params bowl partial-pith)
-  :: ~&  >>>  'params'  ~&  >>>  params
   ?-  -.mechanic
     %condition
       =/  allowed=?  (f.mechanic params)
@@ -119,28 +116,14 @@
     ++  poke
       |=  [=stud:neo vax=vase]
       ^-  (quip card:neo pail:neo)
-      ~&  'poke'
-      :: ?:  ?=(%gift stud)  ~&  >>>  'gift'  ~&  >>>  vax  `pail
       ?>  ?=(%game-instance-diff stud)
       =/  diff=game-instance-diff  !<(game-instance-diff vax)
       :_  pail
       ?-    -.diff
           %debug
-
-            =/  bind  (~(got of:neo kids.bowl) #/mechanics/ttt-square-empty/[ud/0])
-            ~&  "bind"  ~&  bind
-
-            =/  bind2  (~(got of:neo kids.bowl) #/mechanics/ttt-square-empty/ttt-is-my-turn/[ud/0])
-            ~&  "bind2"  ~&  bind2
-            :: =/  grid  (~(get of:neo kids.bowl) #/components/grid)
-            :: ~&  grid
-            :: =/  grid-square  (~(get of:neo kids.bowl) #/components/grid/[ud/0]/[ud/0])
-            :: ~&  grid-square
             *(list card:neo)
+        ::
           %interact
-        :: =/  pax=pith:neo  #/[p/our.bowl]/home/test
-        :: =/  cards  (resolve-interaction bowl pith.diff params.diff)
-           ~&  'interact'
           :~
             :-  (welp here.bowl #/components/grid)
                 [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
