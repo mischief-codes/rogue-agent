@@ -95,10 +95,10 @@
   :-  %z
   %-  ~(gas by *lads:neo)
   :~
-      :: [[|/%ud &] pro/%game-param-assignment ~]
       [[&/%components &] pro/%game-component ~]
+      [[&/%mechanics &] [%or pro/%game-mechanic pro/%game-param-assignment ~] ~]
+      :: [[|/%ud &] pro/%game-param-assignment ~]
       :: [[|/%tas |/%ud &] pro/%game-param-assignment ~]
-      :: [[|/%tas &] pro/%game-mechanic ~]
       :: [[&/%fog |/%tas |] pro/%game-fog ~]
       :: [[[&/%player |/%p |]] pro/%game-player ~]
   ==
@@ -132,37 +132,14 @@
       =/  diff=game-instance-diff  !<(game-instance-diff vax)
       :_  pail
       ?-    -.diff
-        ::   %join
-        :: :~  :-  (snoc here.bowl p/our.bowl)
-        ::     [%make %game-player `[%game-player !>(our.bowl)] ~]
-        :: ==
-        ::   %add-player
-        :: :~  :-  (snoc here.bowl p/who.diff)
-        ::     [%make %game-player `[%game-player !>(who.diff)] ~]
-        :: ==
-        ::   %kick-player
-        :: :~  :-  (snoc here.bowl p/who.diff)
-        ::     [%cull ~]
-        :: ==
-        ::   %add-mechanic
-        :: :~  :-   (snoc (snoc here.bowl %mechanics) mark.diff)
-        ::     [%make mark.diff init.diff ~]
-        :: ==
-        ::   %add-fog
-        :: :~  :-   (snoc (snoc here.bowl %fog) mark.diff)
-        ::     [%make mark.diff init.diff ~]
-        :: ==
-        ::   %add-component
-        :: :~  :-  (snoc (snoc here.bowl %components) name.diff)
-        ::     [%make mark.diff init.diff ~]
-        :: ==
           %debug
-            =/  components  (~(get of:neo kids.bowl) #/components)
-            ~&  components
-            =/  grid  (~(get of:neo kids.bowl) #/components/grid)
-            ~&  grid
-            =/  grid-square  (~(get of:neo kids.bowl) #/components/grid/[ud/0]/[ud/0])
-            ~&  grid-square
+            =/  ttt-square-empty  (~(get of:neo kids.bowl) #/mechanics/ttt-square-empty/[ud/0])
+            :: =+  !<(mechanic=game-mechanic q.q.saga.idea.ttt-square-empty)
+            ~&  "mechanic"  ~&  ttt-square-empty
+            :: =/  grid  (~(get of:neo kids.bowl) #/components/grid)
+            :: ~&  grid
+            :: =/  grid-square  (~(get of:neo kids.bowl) #/components/grid/[ud/0]/[ud/0])
+            :: ~&  grid-square
             *(list card:neo)
           %interact
         :: =/  pax=pith:neo  #/[p/our.bowl]/home/test
@@ -171,6 +148,8 @@
           :~
             :-  (welp here.bowl #/components/grid)
                 [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
+            :-  (welp here.bowl #/mechanics/ttt-square-empty)
+                [%make %game-mechanic `[%game-mechanic !>([%condition game-ttt-square-empty])] ~]
           ==
           %kill
         :~  :-  (snoc here.bowl %ttt-square-empty)  [%cull ~]

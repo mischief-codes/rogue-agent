@@ -24,7 +24,6 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      ~&  'grid square'
       `game-component/!>(~)
     ::
     ++  poke

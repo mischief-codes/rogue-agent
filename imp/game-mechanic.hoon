@@ -33,9 +33,9 @@
       ^-  (quip card:neo pail:neo)
       =/  [=stud:neo =vase]  (need pal)
       =+  !<(mechanic=game-mechanic vase)
-      :_  game-mechanic/!>(mechanic)
-      :~  :-  (snoc here.bowl [%ud 0])  [%make %game-param-assignment `[%game-param-assignment !>([%bind value=[1 2]])] ~]
-      ==
+      `game-mechanic/!>(mechanic)
+      :: :~  :-  (snoc here.bowl [%ud 0])  [%make %game-param-assignment `[%game-param-assignment !>([%bind value=[1 2]])] ~]
+      :: ==
     ::
     ++  poke
       |=  [=stud:neo vax=vase]

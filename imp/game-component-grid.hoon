@@ -37,11 +37,6 @@
 ++  kids
   ^-  kids:neo
   *kids:neo
-  :: %-  some
-  :: :-  %z
-  :: %-  ~(gas by *lads:neo)
-  :: :~  :-  [&/%ud |/%ud &]  [[pro/%game-component] ~]
-  :: ==
 ::
 ++  deps
   ^-  deps:neo
@@ -54,9 +49,6 @@
     ++  init
     |=  pal=(unit pail:neo)
     ^-  (quip card:neo pail:neo)
-    ~&  'grid'
-    ~&  'pal'
-    ~&  q:(need pal)
     =+  !<(grid=game-component-grid q:(need pal))
     [(make-squares bowl x.grid y.grid) game-component/!>(~)]
     ::

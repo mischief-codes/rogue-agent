@@ -26,7 +26,6 @@
 ::
 ++  kids
   *kids:neo
-
 ::
 ++  deps
   ^-  deps:neo
