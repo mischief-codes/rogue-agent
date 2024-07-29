@@ -1,6 +1,6 @@
 
 $%
-  [%condition f=$-(* ?)]
-  :: [%computation f=$_(|*(* $:(map pith vase)))]
-  :: [%effect f=$_(|*(* $:(list card:neo)))]
+  [%condition name=@tas f=$-([bowl:neo *] ?)]
+  [%variable name=@tas f=$-([bowl:neo *] *)]
+  [%effect name=@tas f=$-([bowl:neo *] (list card:neo))]
 ==

@@ -3,48 +3,56 @@
 /@  game-mechanic
 /@  game-params-ttt-square-empty
 /@  game-param-assignment
+/-  square-empty=game-ttt-square-empty
+/-  get-square=game-ttt-get-square
 ::
 =>
 |%
-++  game-ttt-square-empty
-  |=  params=*
-  ^-  ?
-  =/  typed-params  ;;(game-params-ttt-square-empty params)
-  ~&  >>  a.typed-params
-  &
+++  build-params-list
+  |=  [=bowl:neo context=(map pith *) mechanic-pith=pith:neo]
+  ^-  (list *)
+  =/  params-list=(list *)  ~
+  =/  assignment-idx  0
+  |-
+  =/  kid   (~(get of:neo kids.bowl) (welp mechanic-pith #/[ud/assignment-idx]))
+  ?~  kid  params-list
+  =+  !<(assignment=game-param-assignment q.pail.u.kid)
+  =/  param  ?-  -.assignment
+    %bind  value.assignment
+    %var  (~(got by context) pith.assignment)
+  ==
+  %=  $
+    params-list  (snoc params-list param)
+    assignment-idx  +(assignment-idx)
+  ==
 ::
 ++  build-params
-  |=  [=bowl:neo mechanic-pith=pith:neo]
-  ::
-    =/  assignment  (~(got of:neo kids.bowl) #/components/grid/2/0)
-
-  ::
-  =/  mechanic-shrub  (~(dip of:neo kids.bowl) mechanic-pith)
-  =/  assignment-shrub  (~(dip of:neo kids.bowl) (snoc mechanic-pith [%ud 0]))
-  =/  assignment  (~(get of:neo assignment-shrub) ~)
-  ~&  'assignment shrub null?'  ~&  ?=(~ assignment)
-  =/  mechanic  (~(got of:neo kids.bowl) mechanic-pith)
-  =/  params-list=(list *)
-  %+  turn
-      ~(tap of:neo mechanic-shrub)
-      |=  [=pith:neo =idea:neo]
-      ~&  'pith'  ~&  pith
-      ?~  pith  ~
-      ?.  =(%game-mechanic p.q.saga.idea)  ~
-      =+  !<(p=game-param-assignment q.q.saga.idea)
-      ~&  'p'  ~&  p
-      p
-  ~&  >>>  'params list'  ~&  >>>  params-list
-  ?~  params-list  !>(~)
+  |=  [=bowl:neo context=(map pith *) mechanic-pith=pith:neo]
+  :: =/  mechanic-shrub  (~(dip of:neo kids.bowl) mechanic-pith)
+  :: =/  params-list=(list *)
+  :: %+  murn
+  ::   ~(tap of:neo mechanic-shrub)
+  ::   |=  [=pith:neo =idea:neo]
+  ::     ~&  'pith'  ~&  pith
+  ::     ?~  pith  ~
+  ::     ~&  >>  'debug'  ~&  >>  p.q.saga.idea
+  ::     ?:  =(%game-mechanic p.q.saga.idea)  ~
+  ::     =+  !<(p=game-param-assignment q.q.saga.idea)
+  ::     ?-  -.p
+  ::       %bind  `value.p
+  ::       %var  `(~(got by context) pith.p)
+  ::     ==
+  =/  params-list  (build-params-list bowl context mechanic-pith)
+  ~&  'params list'  ~&  params-list
   =/  first-param  -.params-list
-  ?~  +.params-list  !>(first-param)
+  ?~  +.params-list  first-param
   =/  other-params=(list *)  +.params-list
   %+  reel
      other-params
      |:  [a=** b=first-param]  :-  b  a
 ::
 ++  resolve-interaction
-  |=  [=bowl:neo full-pith=pith:neo context=(map pith vase)]
+  |=  [=bowl:neo full-pith=pith:neo context=(map pith *)]
   ^-  (list card:neo)
   =/  partial-pith-len=@  1
   |-
@@ -54,22 +62,26 @@
   =/  kid  (~(get of:neo kids.bowl) partial-pith)
   ?~  kid  %=($ partial-pith-len +(partial-pith-len))
   =+  !<(mechanic=game-mechanic q.q.saga.u.kid)
-  =/  params  (build-params bowl partial-pith)
+  =/  params  (build-params bowl context partial-pith)
+  ~&  >>  'params'  ~&  >>  params
   ?-  -.mechanic
-    %condition
-      =/  allowed=?  (f.mechanic params)
+        %condition
+      =/  allowed=?  (f.mechanic bowl params)
       ~&  >>>  "allowed"  ~&  >>>  allowed
       ?.  allowed  !!  %=($ partial-pith-len +(partial-pith-len))
     ::
-    :: %computation
-    ::   =/  new-context  (f.mechanic params)
-    ::   ~&  >>>  "new-context"  ~&  >>>  new-context
-    ::   %=($ partial-pith-len +(partial-pith-len))
-    :: ::
-    :: %effect
-    ::   =/  new-cards=(list card:neo)  (f.mechanic params)
-    ::   ~&  >>>  "new-cards"  ~&  >>>  new-cards
-    ::   new-cards
+        %variable
+      =/  var  (f.mechanic bowl params)
+      ~&  >>>  "var"  ~&  >>>  var
+      %=  $
+          partial-pith-len  +(partial-pith-len)
+          context  (~(put by context) partial-pith var)
+      ==
+    ::
+        %effect
+      =/  new-cards=(list card:neo)  (f.mechanic bowl params)
+      ~&  >>>  "new-cards"  ~&  >>>  new-cards
+      new-cards
   ==
 --
 ::
@@ -106,12 +118,6 @@
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
       `game-instance/!>(~)
-      :: :~
-      ::       :: :-
-      ::       :: (snoc here.bowl %ttt-square-empty)
-      ::       ::  [%make %game-mechanic `[%game-mechanic !>(`game-mechanic`[%condition f=game-ttt-square-empty])] ~]
-      ::     :-   (snoc here.bowl %components)  [%make %game-component-root ~ ~]
-      :: ==
     ::
     ++  poke
       |=  [=stud:neo vax=vase]
@@ -124,20 +130,31 @@
             *(list card:neo)
         ::
           %interact
-          :~
-            :-  (welp here.bowl #/components/grid)
-                [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
-            :-  (welp here.bowl #/mechanics/ttt-square-empty)
-                [%make %game-mechanic `[%game-mechanic !>([%condition game-ttt-square-empty])] ~]
-          ==
+            (resolve-interaction bowl pith.diff params.diff)
+        ::
           %kill
-        :~  :-  (snoc here.bowl %ttt-square-empty)  [%cull ~]
+        :~  :-  (welp here.bowl #/mechanics/ttt-square-empty)  [%cull ~]
             :-  (welp here.bowl #/components/grid)  [%cull ~]
         ==
+        ::
           %setup
-        :~  :-   (snoc here.bowl %ttt-square-empty)
-              [%make %game-mechanic `[%game-mechanic !>([%condition f=game-ttt-square-empty])] ~]
-            :-   (welp here.bowl #/components/grid)
+        =/  get-square=game-mechanic  [%variable name=%ttt-get-square f=get-square]
+        =/  empty=game-mechanic  [%condition name=%ttt-square-empty f=square-empty]
+        =/  get-square-assignment-0=game-param-assignment  [%bind #/components/grid]
+        =/  get-square-assignment-1=game-param-assignment  [%bind [x=1 y=1]]
+        =/  square-empty-assignment-0=game-param-assignment  [%var #/mechanics/ttt-get-square]
+        :~
+            :-  (welp here.bowl #/mechanics/ttt-get-square)
+              [%make %game-mechanic `[%game-mechanic !>(get-square)] ~]
+            :-  (welp here.bowl #/mechanics/ttt-get-square/[ud/0])
+              [%make %game-param-assignment `[%game-param-assignment !>(get-square-assignment-0)] ~]
+            :-  (welp here.bowl #/mechanics/ttt-get-square/[ud/1])
+              [%make %game-param-assignment `[%game-param-assignment !>(get-square-assignment-1)] ~]
+            :-  (welp here.bowl #/mechanics/ttt-get-square/ttt-square-empty)
+              [%make %game-mechanic `[%game-mechanic !>(empty)] ~]
+            :-  (welp here.bowl #/mechanics/ttt-get-square/ttt-square-empty/[ud/0])
+              [%make %game-param-assignment `[%game-param-assignment !>(square-empty-assignment-0)] ~]
+            :-  (welp here.bowl #/components/grid)
               [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
         ==
       ==

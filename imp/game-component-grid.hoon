@@ -50,7 +50,7 @@
     |=  pal=(unit pail:neo)
     ^-  (quip card:neo pail:neo)
     =+  !<(grid=game-component-grid q:(need pal))
-    [(make-squares bowl x.grid y.grid) game-component/!>(~)]
+    [(make-squares bowl x.grid y.grid) game-component/!>(`!>(grid))]
     ::
     ++  poke
       |=  =pail:neo

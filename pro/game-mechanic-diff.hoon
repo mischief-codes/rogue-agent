@@ -1,5 +1,7 @@
+/@  game-mechanic
+/@  game-param-assignment
 $%
   [%debug ~]
-  [%bind idx=@ud value=*]
-  [%add-child name=@tas f=$-(* ?)]
+  [%assign-param idx=@ud param=game-param-assignment]
+  [%add-child mechanic=game-mechanic]
 ==

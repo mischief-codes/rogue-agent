@@ -46,16 +46,16 @@
           %debug
         *(list card:neo)
       ::
-          %bind
+          %assign-param
         :~
           :-  (snoc here.bowl [%ud idx.diff])
-              [%make %game-param-assignment `[%game-param-assignment !>([%bind value.diff])] ~]
+            [%make %game-param-assignment `[%game-param-assignment !>(param.diff)] ~]
         ==
       ::
           %add-child
         :~
-          :-  (snoc here.bowl name.diff)
-              [%make %game-mechanic `[%game-mechanic !>([%condition f.diff])] ~]
+          :-  (snoc here.bowl name.mechanic.diff)
+            [%make %game-mechanic `[%game-mechanic !>(mechanic.diff)] ~]
         ==
 
       ==

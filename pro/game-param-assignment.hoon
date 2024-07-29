@@ -1,5 +1,4 @@
 $%
   [%bind value=*]
-  :: [%var =pith:neo]
-  :: [%poke ~]
+  [%var =pith:neo]
 ==
