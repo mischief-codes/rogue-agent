@@ -5,6 +5,7 @@
 /@  game-param-assignment
 /-  square-empty=game-ttt-square-empty
 /-  get-square=game-ttt-get-square
+/-  is-my-turn=game-ttt-is-my-turn
 ::
 =>
 |%
@@ -17,6 +18,7 @@
   =/  kid   (~(get of:neo kids.bowl) (welp mechanic-pith #/[ud/assignment-idx]))
   ?~  kid  params-list
   =+  !<(assignment=game-param-assignment q.pail.u.kid)
+  ~&  >>  'debug'  ~&  >>  assignment  ~&  >>>  context
   =/  param  ?-  -.assignment
     %bind  value.assignment
     %var  (~(got by context) pith.assignment)
@@ -28,22 +30,7 @@
 ::
 ++  build-params
   |=  [=bowl:neo context=(map pith *) mechanic-pith=pith:neo]
-  :: =/  mechanic-shrub  (~(dip of:neo kids.bowl) mechanic-pith)
-  :: =/  params-list=(list *)
-  :: %+  murn
-  ::   ~(tap of:neo mechanic-shrub)
-  ::   |=  [=pith:neo =idea:neo]
-  ::     ~&  'pith'  ~&  pith
-  ::     ?~  pith  ~
-  ::     ~&  >>  'debug'  ~&  >>  p.q.saga.idea
-  ::     ?:  =(%game-mechanic p.q.saga.idea)  ~
-  ::     =+  !<(p=game-param-assignment q.q.saga.idea)
-  ::     ?-  -.p
-  ::       %bind  `value.p
-  ::       %var  `(~(got by context) pith.p)
-  ::     ==
   =/  params-list  (build-params-list bowl context mechanic-pith)
-  ~&  'params list'  ~&  params-list
   =/  first-param  -.params-list
   ?~  +.params-list  first-param
   =/  other-params=(list *)  +.params-list
@@ -62,9 +49,11 @@
   =/  kid  (~(get of:neo kids.bowl) partial-pith)
   ?~  kid  %=($ partial-pith-len +(partial-pith-len))
   =+  !<(mechanic=game-mechanic q.q.saga.u.kid)
+  ~&  >  'sigh'  ~&  >  -.mechanic
+  ?:  =(%argument -.mechanic)  %=($ partial-pith-len +(partial-pith-len))
   =/  params  (build-params bowl context partial-pith)
   ~&  >>  'params'  ~&  >>  params
-  ?-  -.mechanic
+  ?+  -.mechanic  !!
         %condition
       =/  allowed=?  (f.mechanic bowl params)
       ~&  >>>  "allowed"  ~&  >>>  allowed
@@ -138,24 +127,48 @@
         ==
         ::
           %setup
+        =/  ttt-is-my-turn=game-mechanic  [%condition name=%ttt-is-my-turn f=is-my-turn]
+        =/  ttt-arg-coordinates=game-mechanic  [%argument name=%ttt-arg-coordinates ~]
         =/  get-square=game-mechanic  [%variable name=%ttt-get-square f=get-square]
         =/  empty=game-mechanic  [%condition name=%ttt-square-empty f=square-empty]
+        =/  is-my-turn-assignment-0=game-param-assignment  [%bind #/components/turn]
+        =/  is-my-turn-assignment-1=game-param-assignment  [%bind #/components/roles]
         =/  get-square-assignment-0=game-param-assignment  [%bind #/components/grid]
-        =/  get-square-assignment-1=game-param-assignment  [%bind [x=1 y=1]]
-        =/  square-empty-assignment-0=game-param-assignment  [%var #/mechanics/ttt-get-square]
+        =/  get-square-assignment-1=game-param-assignment  [%var #/mechanics/ttt-is-my-turn/ttt-arg-coordinates]
+        =/  square-empty-assignment-0=game-param-assignment  [%var #/mechanics/ttt-is-my-turn/ttt-arg-coordinates/ttt-get-square]
         :~
-            :-  (welp here.bowl #/mechanics/ttt-get-square)
-              [%make %game-mechanic `[%game-mechanic !>(get-square)] ~]
-            :-  (welp here.bowl #/mechanics/ttt-get-square/[ud/0])
-              [%make %game-param-assignment `[%game-param-assignment !>(get-square-assignment-0)] ~]
-            :-  (welp here.bowl #/mechanics/ttt-get-square/[ud/1])
-              [%make %game-param-assignment `[%game-param-assignment !>(get-square-assignment-1)] ~]
-            :-  (welp here.bowl #/mechanics/ttt-get-square/ttt-square-empty)
-              [%make %game-mechanic `[%game-mechanic !>(empty)] ~]
-            :-  (welp here.bowl #/mechanics/ttt-get-square/ttt-square-empty/[ud/0])
-              [%make %game-param-assignment `[%game-param-assignment !>(square-empty-assignment-0)] ~]
+            ::  components
             :-  (welp here.bowl #/components/grid)
               [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
+            :-  (welp here.bowl #/components/turn)
+              [%make %game-component-ttt-turn ~ ~]
+            :-  (welp here.bowl #/components/roles/x)
+              [%make %game-component-ttt-role-assignment `[%game-component-ttt-role-assignment !>([~zod %x])] ~]
+            :-  (welp here.bowl #/components/roles/o)
+              [%make %game-component-ttt-role-assignment `[%game-component-ttt-role-assignment !>([~zod %o])] ~]
+
+            ::  mechanics
+            :-  (welp here.bowl #/mechanics/ttt-is-my-turn)
+              [%make %game-mechanic `[%game-mechanic !>(ttt-is-my-turn)] ~]
+            :-  (welp here.bowl #/mechanics/ttt-is-my-turn/[ud/0])
+              [%make %game-param-assignment `[%game-param-assignment !>(is-my-turn-assignment-0)] ~]
+            :-  (welp here.bowl #/mechanics/ttt-is-my-turn/[ud/1])
+              [%make %game-param-assignment `[%game-param-assignment !>(is-my-turn-assignment-1)] ~]
+
+            :-  (welp here.bowl #/mechanics/ttt-is-my-turn/ttt-arg-coordinates)
+              [%make %game-mechanic `[%game-mechanic !>(ttt-arg-coordinates)] ~]
+
+            :-  (welp here.bowl #/mechanics/ttt-is-my-turn/ttt-arg-coordinates/ttt-get-square)
+              [%make %game-mechanic `[%game-mechanic !>(get-square)] ~]
+            :-  (welp here.bowl #/mechanics/ttt-is-my-turn/ttt-arg-coordinates/ttt-get-square/[ud/0])
+              [%make %game-param-assignment `[%game-param-assignment !>(get-square-assignment-0)] ~]
+            :-  (welp here.bowl #/mechanics/ttt-is-my-turn/ttt-arg-coordinates/ttt-get-square/[ud/1])
+              [%make %game-param-assignment `[%game-param-assignment !>(get-square-assignment-1)] ~]
+
+            :-  (welp here.bowl #/mechanics/ttt-is-my-turn/ttt-arg-coordinates/ttt-get-square/ttt-square-empty)
+              [%make %game-mechanic `[%game-mechanic !>(empty)] ~]
+            :-  (welp here.bowl #/mechanics/ttt-is-my-turn/ttt-arg-coordinates/ttt-get-square/ttt-square-empty/[ud/0])
+              [%make %game-param-assignment `[%game-param-assignment !>(square-empty-assignment-0)] ~]
         ==
       ==
   --
