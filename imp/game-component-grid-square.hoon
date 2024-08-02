@@ -24,7 +24,9 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      `game-component/!>(~)
+      ?~  pal  `game-component/!>(~)
+      =/  [=stud:neo =vase]  (need pal)
+      `game-component/vase
     ::
     ++  poke
       |=  =pail:neo
