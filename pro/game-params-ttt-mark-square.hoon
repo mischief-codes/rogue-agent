@@ -1,1 +1,1 @@
-,[turn=pith:neo board=pith:neo x=@ud y=@ud]
+,[turn=pith:neo grid=pith:neo x=@ud y=@ud]

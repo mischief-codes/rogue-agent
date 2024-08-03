@@ -1,7 +1,6 @@
 /@  game-instance-diff
 /@  game-component-grid
 /@  game-mechanic
-/@  game-params-ttt-square-empty
 /@  game-param-assignment
 /-  square-empty=game-ttt-square-empty
 /-  get-square=game-ttt-get-square

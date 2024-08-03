@@ -1,4 +1,6 @@
 /@  game-component-ttt-role
+/@  game-component-ttt-turn
+
 ^-  kook:neo
 |%
 ::
@@ -25,7 +27,9 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      =/  turn=game-component-ttt-role  %x
+      ?~  pal  `game-component/!>(%x)
+      =/  [=stud:neo =vase]  (need pal)
+      =+  !<(turn=game-component-ttt-turn vase)
       `game-component/!>(turn)
     ::
     ++  poke

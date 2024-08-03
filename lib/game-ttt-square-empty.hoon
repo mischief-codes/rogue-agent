@@ -1,5 +1,5 @@
 /@  game-params-ttt-square-empty
 |=  [=bowl:neo params=*]
   ^-  ?
-  =/  typed-params  ;;(game-params-ttt-square-empty params)
-  &
+  =/  square  ;;(game-params-ttt-square-empty params)
+  =(%empty square)

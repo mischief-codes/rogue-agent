@@ -24,7 +24,7 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      ?~  pal  `game-component/!>(~)
+      ?~  pal  `game-component/!>(%empty)
       =/  [=stud:neo =vase]  (need pal)
       `game-component/vase
     ::
