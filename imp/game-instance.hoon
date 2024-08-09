@@ -6,6 +6,7 @@
 /-  get-square=game-ttt-get-square
 /-  is-my-turn=game-ttt-is-my-turn
 /-  mark-square=game-ttt-mark-square
+/-  game-setup
 ::
 =>
 |%
@@ -118,7 +119,11 @@
       :_  pail
       ?-    -.diff
           %debug
-            *(list card:neo)
+          =,  game-setup
+          =/  cards=(list card:neo)  (process-recipe test-ingredients #/mechanics)
+          =/  piths  %+  turn  cards  |=  car=card:neo  ^-  pith:neo  -.car
+          ~&  piths
+          ~
         ::
           %interact
             (resolve-interaction bowl pith.diff params.diff)
