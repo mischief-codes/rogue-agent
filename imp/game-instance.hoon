@@ -11,7 +11,7 @@
 =>
 |%
 ++  build-params-list
-  |=  [=bowl:neo context=(map @tas *) mechanic-pith=pith:neo]
+  |=  [=bowl:neo context=(map pith *) mechanic-pith=pith:neo]
   ^-  (list *)
   =/  params-list=(list *)  ~
   =/  assignment-idx  0
@@ -22,7 +22,7 @@
   ~&  'param assignment'  ~&  >>  assignment  ~&  'context'  ~&  >>  context
   =/  param  ?-  -.assignment
     %bind  value.assignment
-    %var  =/  value  (~(got by context) name.assignment)  ~&  value  value
+    %var  ~&  >  resolution.assignment  =/  value  (~(got by context) resolution.assignment)  ~&  value  value
   ==
   %=  $
     params-list  (snoc params-list param)
@@ -30,7 +30,7 @@
   ==
 ::
 ++  build-params
-  |=  [=bowl:neo context=(map @tas *) mechanic-pith=pith:neo]
+  |=  [=bowl:neo context=(map pith *) mechanic-pith=pith:neo]
   =/  params-list  (build-params-list bowl context mechanic-pith)
   =/  first-param  -.params-list
   ?~  +.params-list  first-param
@@ -42,8 +42,9 @@
      [-.b +.b a]
 ::
 ++  resolve-interaction
-  |=  [=bowl:neo full-pith=pith:neo context=(map @tas *)]
+  |=  [=bowl:neo full-pith=pith:neo user-params=(map @tas *)]
   ^-  (list card:neo)
+  =/  context  *(map pith *)
   =/  partial-pith-len=@  1
   |-
   ?:  (gth partial-pith-len (lent full-pith))  *(list card:neo)  :: should never happen (no effect)
@@ -53,7 +54,10 @@
   ?~  kid  %=($ partial-pith-len +(partial-pith-len))
   =+  !<(mechanic=game-mechanic q.q.saga.u.kid)
   ~&  'mechanic type'  ~&  >  -.mechanic
-  ?:  =(%argument -.mechanic)  %=($ partial-pith-len +(partial-pith-len))
+  ?:  =(%argument -.mechanic)
+    =/  arg-value  (~(got by user-params) name.mechanic)
+    =/  new-context  (~(put by context) partial-pith arg-value)
+    %=($ partial-pith-len +(partial-pith-len), context new-context)
   =/  params  (build-params bowl context partial-pith)
   ~&  'mechanic params'  ~&  >>  params
   ?+  -.mechanic  !!
@@ -67,7 +71,7 @@
       ~&  "var value"  ~&  >>>  var
       %=  $
           partial-pith-len  +(partial-pith-len)
-          context  (~(put by context) name.mechanic var)
+          context  (~(put by context) partial-pith var)
       ==
     ::
         %effect
@@ -135,7 +139,9 @@
         ::
           %setup
         =,  game-setup
-        =/  mechanic-cards  (process-recipe test-ingredients (welp here.bowl #/mechanics))
+        =/  relative=pith:neo  #/mechanics
+        =/  full=pith:neo  (welp here.bowl relative)
+        =/  mechanic-cards  (process-recipe test-ingredients here.bowl)
         =/  component-cards
           :~
             :-  (welp here.bowl #/components/grid)
