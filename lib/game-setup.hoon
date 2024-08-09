@@ -54,7 +54,7 @@
   =/  note=note:neo  :*
     %make
     %game-param-assignment
-    `[%game-param-assignment !>(p)]
+    `[%game-param-assignment !>(param)]
     ~
   ==
   =/  card=card:neo  :-  p  note
