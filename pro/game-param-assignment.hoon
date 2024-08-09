@@ -1,4 +1,4 @@
 $%
   [%bind value=*]
-  [%var =pith:neo]
+  [%var name=@tas resolution=pith:neo]
 ==

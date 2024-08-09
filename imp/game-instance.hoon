@@ -11,7 +11,7 @@
 =>
 |%
 ++  build-params-list
-  |=  [=bowl:neo context=(map pith *) mechanic-pith=pith:neo]
+  |=  [=bowl:neo context=(map @tas *) mechanic-pith=pith:neo]
   ^-  (list *)
   =/  params-list=(list *)  ~
   =/  assignment-idx  0
@@ -19,10 +19,10 @@
   =/  kid   (~(get of:neo kids.bowl) (welp mechanic-pith #/[ud/assignment-idx]))
   ?~  kid  params-list
   =+  !<(assignment=game-param-assignment q.pail.u.kid)
-  ~&  >>  'debug'  ~&  >>  assignment  ~&  >>>  context
+  ~&  'param assignment'  ~&  >>  assignment  ~&  'context'  ~&  >>  context
   =/  param  ?-  -.assignment
     %bind  value.assignment
-    %var  =/  value  (~(got by context) pith.assignment)  ~&  value  value
+    %var  =/  value  (~(got by context) name.assignment)  ~&  value  value
   ==
   %=  $
     params-list  (snoc params-list param)
@@ -30,7 +30,7 @@
   ==
 ::
 ++  build-params
-  |=  [=bowl:neo context=(map pith *) mechanic-pith=pith:neo]
+  |=  [=bowl:neo context=(map @tas *) mechanic-pith=pith:neo]
   =/  params-list  (build-params-list bowl context mechanic-pith)
   =/  first-param  -.params-list
   ?~  +.params-list  first-param
@@ -42,37 +42,37 @@
      [-.b +.b a]
 ::
 ++  resolve-interaction
-  |=  [=bowl:neo full-pith=pith:neo context=(map pith *)]
+  |=  [=bowl:neo full-pith=pith:neo context=(map @tas *)]
   ^-  (list card:neo)
   =/  partial-pith-len=@  1
   |-
   ?:  (gth partial-pith-len (lent full-pith))  *(list card:neo)  :: should never happen (no effect)
   =/  partial-pith=pith:neo  (swag [0 partial-pith-len] full-pith)
-  ~&  >  "pith"  ~&  >  partial-pith
+  ~&  "pith"  ~&  >  partial-pith
   =/  kid  (~(get of:neo kids.bowl) partial-pith)
   ?~  kid  %=($ partial-pith-len +(partial-pith-len))
   =+  !<(mechanic=game-mechanic q.q.saga.u.kid)
-  ~&  >  'sigh'  ~&  >  -.mechanic
+  ~&  'mechanic type'  ~&  >  -.mechanic
   ?:  =(%argument -.mechanic)  %=($ partial-pith-len +(partial-pith-len))
   =/  params  (build-params bowl context partial-pith)
-  ~&  >>  'params'  ~&  >>  params
+  ~&  'mechanic params'  ~&  >>  params
   ?+  -.mechanic  !!
         %condition
       =/  allowed=?  (f.mechanic bowl params)
-      ~&  >>>  "allowed"  ~&  >>>  allowed
+      ~&  "allowed"  ~&  >>>  allowed
       ?.  allowed  !!  %=($ partial-pith-len +(partial-pith-len))
     ::
         %variable
       =/  var  (f.mechanic bowl params)
-      ~&  >>>  "var"  ~&  >>>  var
+      ~&  "var value"  ~&  >>>  var
       %=  $
           partial-pith-len  +(partial-pith-len)
-          context  (~(put by context) partial-pith var)
+          context  (~(put by context) name.mechanic var)
       ==
     ::
         %effect
       =/  new-cards=(list card:neo)  (f.mechanic bowl params)
-      ~&  >>>  "new-cards"  ~&  >>>  new-cards
+      ~&  "new-cards"  ~&  >>>  new-cards
       new-cards
   ==
 --

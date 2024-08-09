@@ -20,17 +20,17 @@
   ::
   :-  [%variable name=%ttt-get-square f=get-square]
     :~  [%bind #/components/grid]
-        [%var #/mechanics/ttt-is-my-turn/ttt-arg-coordinates]
+        [%var %ttt-arg-coordinates ~]
     ==
   ::
   :-  [%condition name=%ttt-square-empty f=square-empty]
-    :~  [%var #/mechanics/ttt-is-my-turn/ttt-arg-coordinates/ttt-get-square]
+    :~  [%var %ttt-get-square ~]
     ==
   ::
   :-  [%effect name=%ttt-mark-square f=mark-square]
     :~  [%bind #/components/turn]
         [%bind #/components/grid]
-        [%var #/mechanics/ttt-is-my-turn/ttt-arg-coordinates]
+        [%var %ttt-arg-coordinates ~]
     ==
 ==
 ::
@@ -43,13 +43,14 @@
   ==
 ::
 ++  process-params
-  |=  [params=(list game-param-assignment) base=pith:neo]
+  |=  [params=(list game-param-assignment) base=pith:neo locations=(map @tas pith:neo)]
   ^-  (list card:neo)
   =/  i=@ud  0
   =/  res  *(list card:neo)
   |-
   ?:  (gte i (lent params))  res
   =/  param  (snag i params)
+  =?  param  ?=(%var -.param)  [%var name.param (~(got by locations) name.param)]
   =/  p  (snoc base [%ud i])
   =/  note=note:neo  :*
     %make
@@ -63,18 +64,19 @@
 ++  process-recipe
   |=  [rec=recipe base=pith:neo]
   ^-  (list card:neo)
+  =/  locations  *(map @tas pith:neo)
   ?-  -.rec
-    %leaf  -:(process-leaf ingredients.rec base)
-    %branch  (process-branch ingredients.rec p.rec base)
+    %leaf  -:(process-leaf ingredients.rec base locations)
+    %branch  (process-branch ingredients.rec p.rec base locations)
   ==
 ::
 ++  process-leaf
-  |=  [ingredients=(list ingredient) base=pith:neo]
-  ^-  (pair (list card:neo) pith)
+  |=  [ingredients=(list ingredient) base=pith:neo locations=(map @tas pith:neo)]
+  ^-  [(list card:neo) pith:neo (map @tas pith:neo)]
   =/  cards  *(list card:neo)
   =/  i=@ud  0
   |-
-  ?:  (gte i (lent ingredients))  [cards base]
+  ?:  (gte i (lent ingredients))  [cards base locations]
   =/  ing=ingredient  (snag i ingredients)
   =/  new-pith=pith:neo  (snoc base name.mechanic.ing)
   =/  note=note:neo  :*
@@ -84,42 +86,22 @@
     ~
   ==
   =/  new-cards=(list card:neo)  (snoc cards [new-pith note])
-  =.  new-cards  (welp new-cards (process-params params.ing new-pith))
-  %=($ i +(i), cards new-cards, base new-pith)
+  =.  new-cards  (welp new-cards (process-params params.ing new-pith locations))
+  =/  new-locations=(map @tas pith:neo)  (~(put by locations) name.mechanic.ing new-pith)
+  %=($ i +(i), cards new-cards, base new-pith, locations new-locations)
 ::
 ++  process-branch
-  |=  [ingredients=(list ingredient) options=(list recipe) base=pith:neo]
+  |=  [ingredients=(list ingredient) options=(list recipe) base=pith:neo locations=(map @tas pith:neo)]
   ^-  (list card:neo)
-  =/  [cards=(list card:neo) fork=pith]  (process-leaf ingredients base)
+  =/  [cards=(list card:neo) fork=pith new-locations=(map @tas pith:neo)]
+    (process-leaf ingredients base locations)
   =/  i=@ud  0
   |-
   ?:  (gte i (lent options))  cards
   =/  rec=recipe  (snag i options)
   =/  new-cards=(list card:neo)  ?-  -.rec
-      %leaf  -:(process-leaf ingredients.rec base)
-      %branch  (process-branch ingredients.rec p.rec base)
+      %leaf  -:(process-leaf ingredients.rec base new-locations)
+      %branch  (process-branch ingredients.rec p.rec base new-locations)
   ==
   %=($ i +(i), cards (welp cards new-cards))
-
-
-  :: :: ?:  (gte i (lent recipes))  res
-  :: :: =/  rec=recipe  (snag i recipes)
-  :: ?-  -.rec
-  :: %branch  !!
-  :: %leaf
-  :: =/  ingredients=(list ingredient)  ingredients.rec
-  :: =/  i=@ud  0
-  :: |-
-  :: =/  ing=ingredient  (snag i ingredients)
-  :: =/  new-pith  (snoc mechanic-pith name.mechanic.ing)
-  :: =/  note=note:neo  :*
-  ::   %make
-  ::   %game-mechanic
-  ::   `[%game-mechanic !>(mechanic.ing)]
-  ::   ~
-  :: ==
-  :: =/  cards=(list card:neo)  :~  :-  new-pith  note  ==
-  :: =.  cards  (welp cards (process-params params.ing new-pith))
-  :: %=($ i +(i), res (welp res cards))
 --
-::
