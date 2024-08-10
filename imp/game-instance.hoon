@@ -2,11 +2,8 @@
 /@  game-component-grid
 /@  game-mechanic
 /@  game-param-assignment
-/-  square-empty=game-ttt-square-empty
-/-  get-square=game-ttt-get-square
-/-  is-my-turn=game-ttt-is-my-turn
-/-  mark-square=game-ttt-mark-square
-/-  game-setup
+/-  setup=game-setup
+/-  ttt-setup=game-ttt-setup
 ::
 =>
 |%
@@ -123,14 +120,12 @@
       :_  pail
       ?-    -.diff
           %debug
-          =,  game-setup
-          =/  cards=(list card:neo)  (process-preset test-branch here.bowl)
-          =/  piths  %+  turn  cards  |=  car=card:neo  ^-  pith:neo  -.car
-          ~&  piths
-          ~
+        =,  setup
+        =/  mechanic-cards  (process-preset.setup mechanics.ttt-setup here.bowl)
+        *(list card:neo)
         ::
           %interact
-            (resolve-interaction bowl pith.diff params.diff)
+        (resolve-interaction bowl pith.diff params.diff)
         ::
           %kill
         :~  :-  (welp here.bowl #/mechanics/ttt-square-empty)  [%cull ~]
@@ -138,21 +133,9 @@
         ==
         ::
           %setup
-        =,  game-setup
-        =/  relative=pith:neo  #/mechanics
-        =/  full=pith:neo  (welp here.bowl relative)
-        =/  mechanic-cards  (process-preset test-branch here.bowl)
-        =/  component-cards
-          :~
-            :-  (welp here.bowl #/components/grid)
-              [%make %game-component-grid `[%game-component-grid !>([x=3 y=3])] ~]
-            :-  (welp here.bowl #/components/turn)
-              [%make %game-component-ttt-turn ~ ~]
-            :-  (welp here.bowl #/components/roles/x)
-              [%make %game-component-ttt-role-assignment `[%game-component-ttt-role-assignment !>([~zod %x])] ~]
-            :-  (welp here.bowl #/components/roles/o)
-              [%make %game-component-ttt-role-assignment `[%game-component-ttt-role-assignment !>([~zod %o])] ~]
-        ==
+        =,  setup
+        =/  mechanic-cards  (process-preset.setup mechanics.ttt-setup here.bowl)
+        =/  component-cards  (components.ttt-setup here.bowl)
         (welp mechanic-cards component-cards)
       ==
   --

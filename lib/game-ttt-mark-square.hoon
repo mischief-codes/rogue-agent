@@ -1,10 +1,11 @@
-/@  game-params-ttt-mark-square
 /@  game-component-ttt-turn
 /@  game-component-ttt-square
 /@  game-component-ttt-role
 
 =>
 |%
++$  mark-square-params
+  [turn=pith:neo grid=pith:neo x=@ud y=@ud]
 ++  check-win
   |=  [=bowl:neo grid=pith player=game-component-ttt-role]
   ^-  ?
@@ -91,16 +92,16 @@
   =(square-player player)
 ::
 --
-|=  [=bowl:neo params=*]
+|=  [=bowl:neo raw=*]
   ^-  (list card:neo)
-  =/  typed-params  ;;(game-params-ttt-mark-square params)
-  =/  turn-shrub  (~(got of:neo kids.bowl) turn.typed-params)
+  =/  params  ;;(mark-square-params raw)
+  =/  turn-shrub  (~(got of:neo kids.bowl) turn.params)
   =+  !<(turn=game-component-ttt-turn q.q.saga.turn-shrub)
   ?:  =(%done turn)  !!
   =/  next-turn=game-component-ttt-turn  ?+(turn !! %o %x, %x %o)
   =/  role=game-component-ttt-role  ?+(turn !! %o %o, %x %x)
   =/  square=game-component-ttt-square  ?+(turn !! %o %o, %x %x)
-  =/  square-pith=pith  (welp grid.typed-params #/[ud/x.typed-params]/[ud/y.typed-params])
+  =/  square-pith=pith  (welp grid.params #/[ud/x.params]/[ud/y.params])
   =/  square-shrub  (~(got of:neo kids.bowl) square-pith)
   =.  q.q.saga.square-shrub  !>(square)
   =.  kids.bowl  (~(put of:neo kids.bowl) square-pith square-shrub)
@@ -110,12 +111,12 @@
       [%make %game-component-grid-square `[%game-component-grid-square !>(square)] ~]
   ==
   =/  next-turn=card:neo
-      :-  (welp here.bowl turn.typed-params)
+      :-  (welp here.bowl turn.params)
       [%make %game-component-ttt-turn `[%game-component-ttt-turn !>(next-turn)] ~]
   =/  end-game=card:neo
-      :-  (welp here.bowl turn.typed-params)
+      :-  (welp here.bowl turn.params)
       [%make %game-component-ttt-turn `[%game-component-ttt-turn !>(%done)] ~]
-  =/  win=?  (check-win bowl grid.typed-params role)
+  =/  win=?  (check-win bowl grid.params role)
   ~&  'win?'  ~&  win
   ?:  win  (snoc cards end-game)
   (snoc cards next-turn)

@@ -1,10 +1,5 @@
 /@  game-mechanic
 /@  game-param-assignment
-/-  square-empty=game-ttt-square-empty
-/-  get-square=game-ttt-get-square
-:: /-  is-my-turn=game-ttt-is-my-turn
-/-  mark-square=game-ttt-mark-square
-:: /-  give-up=game-ttt-give-up
 /-  ttt=game-ttt
 ::
 |%
@@ -15,57 +10,6 @@
   $%  [%leaf confs=(list mechanic-conf)]
       [%branch confs=(list mechanic-conf) p=(list preset)]
   ==
-::
-++  test-branch
-^-  preset
-:*
-  %branch
-  ~
-  :~
-    test-leaf
-    test-leaf-2
-  ==
-==
-::
-++  test-leaf-2
-^-  preset
-=,  ttt
-:-  %leaf
-=/  mechanic=game-mechanic  [%effect name=%ttt-give-up f=give-up]
-:~
-  :-  mechanic
-    :~  [%bind #/components/turn]
-    ==
-==
-::
-++  test-leaf
-^-  preset
-=,  ttt
-:-  %leaf
-:~
-  :-  [%condition name=%ttt-is-my-turn f=is-my-turn]
-    :~  [%bind #/components/turn]
-        [%bind #/components/roles]
-    ==
-  ::
-  :-  [%argument name=%ttt-arg-coordinates ~]
-    *(list game-param-assignment)
-  ::
-  :-  [%variable name=%ttt-get-square f=get-square]
-    :~  [%bind #/components/grid]
-        [%var %ttt-arg-coordinates ~]
-    ==
-  ::
-  :-  [%condition name=%ttt-square-empty f=square-empty]
-    :~  [%var %ttt-get-square ~]
-    ==
-  ::
-  :-  [%effect name=%ttt-mark-square f=mark-square]
-    :~  [%bind #/components/turn]
-        [%bind #/components/grid]
-        [%var %ttt-arg-coordinates ~]
-    ==
-==
 ::
 ++  process-preset
   |=  [pre=preset here=pith:neo]
