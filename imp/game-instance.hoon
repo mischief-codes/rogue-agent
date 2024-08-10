@@ -124,7 +124,7 @@
       ?-    -.diff
           %debug
           =,  game-setup
-          =/  cards=(list card:neo)  (process-recipe test-ingredients #/mechanics)
+          =/  cards=(list card:neo)  (process-preset test-branch here.bowl)
           =/  piths  %+  turn  cards  |=  car=card:neo  ^-  pith:neo  -.car
           ~&  piths
           ~
@@ -141,7 +141,7 @@
         =,  game-setup
         =/  relative=pith:neo  #/mechanics
         =/  full=pith:neo  (welp here.bowl relative)
-        =/  mechanic-cards  (process-recipe test-ingredients here.bowl)
+        =/  mechanic-cards  (process-preset test-branch here.bowl)
         =/  component-cards
           :~
             :-  (welp here.bowl #/components/grid)
