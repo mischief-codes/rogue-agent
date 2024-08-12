@@ -25,7 +25,7 @@
       :~  [%var %ttt-get-square ~]
       ==
     ::
-    :-  [%effect name=%ttt-mark-suare f=mark-square]
+    :-  [%effect name=%ttt-mark-square f=mark-square]
       :~  [%bind #/components/turn]
           [%bind #/components/grid]
           [%var %ttt-arg-coordinates ~]

@@ -94,7 +94,7 @@
   :-  %z
   %-  ~(gas by *lads:neo)
   :~
-      [[&/%components &] pro/%game-component ~]
+      [[&/%components &] [%any ~] ~]
       [[&/%mechanics &] [%or pro/%game-mechanic pro/%game-param-assignment ~] ~]
   ==
 ::
