@@ -1,16 +1,10 @@
 /@  game-mechanic
 /@  game-param-assignment
+/@  preset=game-mechanics-preset
+/@  mechanic-conf=game-mechanic-conf
 /-  ttt=game-ttt
 ::
 |%
-+$  mechanic-conf  [mechanic=game-mechanic params=(list game-param-assignment)]
-::
-+$  preset
-  $~  [%leaf *(list mechanic-conf)]
-  $%  [%leaf confs=(list mechanic-conf)]
-      [%branch confs=(list mechanic-conf) p=(list preset)]
-  ==
-::
 ++  process-preset
   |=  [pre=preset here=pith:neo]
   =/  rel=pith:neo  #/mechanics
