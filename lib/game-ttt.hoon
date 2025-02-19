@@ -62,7 +62,7 @@
   =/  cards=(list card:neo)
   :~
     :-  (welp here.bowl square-pith)
-      [%make %game-component-grid-square `[%game-component-grid-square !>(sqr)] ~]
+      [%make %game-component-ttt-square `[%game-component-ttt-square !>(sqr)] ~]
   ==
   =/  next-turn=card:neo
       :-  (welp here.bowl turn.params)

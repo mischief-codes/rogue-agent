@@ -1,9 +1,10 @@
+/@  game-component-ttt-square
 ^-  kook:neo
 |%
 ::
 ++  state
   ^-  curb:neo
-  [%pro %game-component]
+  [%pro %game-component-ttt-square]
 ::
 ++  poke
   ^-  (set stud:neo)
@@ -24,9 +25,9 @@
     ++  init
       |=  pal=(unit pail:neo)
       ^-  (quip card:neo pail:neo)
-      ?~  pal  `game-component/!>(%empty)
-      =/  [=stud:neo =vase]  (need pal)
-      `game-component/vase
+      ?~  pal  `game-component-ttt-square/!>(%empty)
+      `(need pal)
+      ::  `game-component-ttt-square/!<(game-component-ttt-square vase)
     ::
     ++  poke
       |=  =pail:neo

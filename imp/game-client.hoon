@@ -20,6 +20,7 @@
   :-  %y
   %-  ~(gas by *lads:neo)
   :~  :-  [&/%instance |/%tas |/%ud |]  [pro/%game-instance ~]
+      :-  [&/%preset |/%t &]  [pro/%game-preset ~]
   ==
 ::
 ::
@@ -38,6 +39,8 @@
       =/  =pith:neo  (welp here.bowl #/tic-tac-toe/[ud/0])
       :~  :-  (welp here.bowl #/instance/tic-tac-toe/[ud/0])
             [%make %game-instance `[%game-instance !>(~)] ~]
+          :-  (welp here.bowl #/preset/tic-tac-toe)
+            [%make %game-preset `[%game-preset !>(~)] ~]
       ==
     ::
     ++  poke

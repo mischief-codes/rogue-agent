@@ -1,4 +1,5 @@
 /@  game-component-grid
+/@  game-component-ttt-square
 /@  game-component
 ::
 =>
@@ -19,7 +20,7 @@
   |=  [=bowl:neo row=@ud col=@ud]
   ^-  (list card:neo)
   =/  =pith:neo  (welp here.bowl #/[ud/row]/[ud/col])
-  :~  [pith %make %game-component-grid-square ~ ~]
+  :~  [pith %make %game-component-ttt-square ~ ~]
   ==
 --
 ::
@@ -36,7 +37,12 @@
 ::
 ++  kids
   ^-  kids:neo
-  *kids:neo
+  %-  some
+  :-  %y
+  %-  ~(gas by *lads:neo)
+  :~
+      [[|/%ud |/%ud |] pro/%game-component-ttt-square ~]
+  ==
 ::
 ++  deps
   ^-  deps:neo
