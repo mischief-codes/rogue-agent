@@ -1,0 +1,11 @@
+[workspace]
+members = [
+    "game-core",
+    "game-web",
+    "game-server"
+]
+
+[workspace.dependencies]
+rand = "0.8"
+axum = "0.7"
+tokio = { version = "1.0", features = ["full"] }

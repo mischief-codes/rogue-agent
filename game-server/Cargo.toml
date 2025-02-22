@@ -1,0 +1,10 @@
+[package]
+name = "game-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+game-core = { path = "../game-core" }
+game-web = { path = "../game-web" }
+axum.workspace = true
+tokio.workspace = true
